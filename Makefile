@@ -1,17 +1,18 @@
 # ====================================================================================
 # Setup Project
 
-PROJECT_NAME ?= upjet-provider-template
-PROJECT_REPO ?= github.com/upbound/$(PROJECT_NAME)
+#TODO: PROJECT_REPO may cause problem. If `myorg` does not work use `Superm4n97`
+PROJECT_NAME ?= provider-github
+PROJECT_REPO ?= github.com/myorg/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION ?= 1.3.3
 
-export TERRAFORM_PROVIDER_SOURCE ?= hashicorp/null
-export TERRAFORM_PROVIDER_REPO ?= https://github.com/hashicorp/terraform-provider-null
-export TERRAFORM_PROVIDER_VERSION ?= 3.1.0
-export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-null
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-null_v3.1.0_x5
-export TERRAFORM_DOCS_PATH ?= docs/resources
+export TERRAFORM_PROVIDER_SOURCE ?= integrations/github
+export TERRAFORM_PROVIDER_REPO ?= https://github.com/integrations/terraform-provider-github
+export TERRAFORM_PROVIDER_VERSION ?= 5.5.0
+export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-github
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-github_v5.5.0_x5
+export TERRAFORM_DOCS_PATH ?= website/docs/r
 
 PLATFORMS ?= linux_amd64 linux_arm64
 
@@ -38,7 +39,7 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
-GO_REQUIRED_VERSION ?= 1.19
+GO_REQUIRED_VERSION ?= 1.20
 GOLANGCILINT_VERSION ?= 1.50.0
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
@@ -87,7 +88,7 @@ fallthrough: submodules
 
 # NOTE(hasheddan): we force image building to happen prior to xpkg build so that
 # we ensure image is present in daemon.
-xpkg.build.upjet-provider-template: do.build.images
+xpkg.build.provider-github: do.build.images
 
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.

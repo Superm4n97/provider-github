@@ -7,6 +7,7 @@ package clients
 import (
 	"context"
 	"encoding/json"
+	"github.com/myorg/provider-github/credential"
 
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/pkg/errors"
@@ -15,7 +16,7 @@ import (
 
 	"github.com/upbound/upjet/pkg/terraform"
 
-	"github.com/upbound/upjet-provider-template/apis/v1beta1"
+	"github.com/myorg/provider-github/apis/v1beta1"
 )
 
 const (
@@ -24,7 +25,10 @@ const (
 	errGetProviderConfig    = "cannot get referenced ProviderConfig"
 	errTrackUsage           = "cannot track ProviderConfig usage"
 	errExtractCredentials   = "cannot extract credentials"
-	errUnmarshalCredentials = "cannot unmarshal template credentials as JSON"
+	errUnmarshalCredentials = "cannot unmarshal github credentials as JSON"
+
+	keyBaseURL = "base_url"
+	keyToken   = "token"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -67,6 +71,11 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			"username": creds["username"],
 			"password": creds["password"],
 		}*/
+
+		ps.Configuration = map[string]any{
+			keyToken: credential.GithubToken,
+		}
+
 		return ps, nil
 	}
 }
